@@ -12,16 +12,22 @@ public class player_movement : MonoBehaviour
     public KeyCode moveR;
     public KeyCode moveS;
     public KeyCode moveJ;
+
     private int forwardSpeed;
-    public float new_lane_pos = 0;
-    public float horizGap = 2.5f;
     public float horizSpeed = 5;
+
     public float jump_force = 10;
+
     public int laneNum = 2;
+    public float new_lane_pos = 0;
+    public float lane_horizGap = 2.5f;
+
     public bool controlBlocked;
+
     private Animator anim;
     public Collider full;
     public Collider half;
+
     private bool isGrounded = false;
     private bool changing_lane = false;
     public bool Run = false;
@@ -29,7 +35,6 @@ public class player_movement : MonoBehaviour
     private void Awake()
     {
         anim =transform.GetChild(0).GetComponent<Animator>();
-        
     }
 
     void Start()
@@ -37,7 +42,7 @@ public class player_movement : MonoBehaviour
         forwardSpeed = data.speed;
         half.enabled = false;
         full.enabled = true;
-        //run();
+        run();
     }
     
     private void OnCollisionStay(Collision collision)
@@ -83,7 +88,7 @@ public class player_movement : MonoBehaviour
     {
         if ((laneNum > 1) && (controlBlocked == false))
         {
-            StartCoroutine(stopSlide(new_lane_pos - horizGap));
+            StartCoroutine(stopSlide(new_lane_pos - lane_horizGap));
             laneNum -= 1;
             controlBlocked = true;
             anim.SetTrigger("move left");
@@ -94,7 +99,7 @@ public class player_movement : MonoBehaviour
     {
         if ((laneNum < 3) && (controlBlocked == false))
         {
-            StartCoroutine(stopSlide(new_lane_pos + horizGap));
+            StartCoroutine(stopSlide(new_lane_pos + lane_horizGap));
             laneNum += 1;
             controlBlocked = true;
             anim.SetTrigger("move right");
